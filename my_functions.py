@@ -167,8 +167,9 @@ def feature_extractor(form_vars, dataset, progress_bar=None):
   return None
 
 
-def model_prediction(params, X_train, y_train, X_test):
+def model_prediction_xgboost(params, X_train, y_train, X_test):
   import xgboost as xgb
+  import numpy as np
 
   model = xgb.XGBClassifier(
       use_label_encoder=False,
@@ -216,7 +217,7 @@ def xgboost_cost(params, X_train, y_train, X_test, y_test):
   params_to_use = params.copy()
 
   for i in range(num_rows):
-    prediction = model_prediction(params_to_use[i], X_train, y_train, X_test)
+    prediction = model_prediction_xgboost(params_to_use[i], X_train, y_train, X_test)
     mean_error = metrics.mean_absolute_error(y_test, prediction)
     
     results.append(mean_error)
@@ -318,7 +319,7 @@ def main_fit(form_vars, X, y):
         st.markdown(f'- min_child_weight={pos[3]}')
         st.markdown(f'- max_delta_step={pos[4]}')
 
-        prediction = model_prediction(pos, X_train, y_train, X_test)
+        prediction = model_prediction_xgboost(pos, X_train, y_train, X_test)
 
       elif form_vars.get('CLASSIFICATOR') == 'Bagging':
         cost, pos = optimizer.optimize(bagging_cost,
