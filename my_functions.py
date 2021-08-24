@@ -203,7 +203,7 @@ def model_prediction_bagging(params, X_train, y_train, X_test):
                                     min_samples_split=int(params[2])+2,
                                     min_samples_leaf=int(params[3])+1
                                     )
-  num_trees = int(params[4])
+  num_trees = int(params[4])+1
   model = BaggingClassifier(base_estimator = base_cls,
                             n_estimators = num_trees,
                             random_state = 42)
