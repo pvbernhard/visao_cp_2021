@@ -322,7 +322,7 @@ def main_fit(form_vars, X, y):
         st.markdown(f'Parâmetros usados:')
         st.markdown(f'- eta={pos[0]}')
         st.markdown(f'- gamma={pos[1]}')
-        st.markdown(f'- max_depth={pos[2]}')
+        st.markdown(f'- max_depth={int(pos[2])}')
         st.markdown(f'- min_child_weight={pos[3]}')
         st.markdown(f'- max_delta_step={pos[4]}')
 
@@ -338,10 +338,10 @@ def main_fit(form_vars, X, y):
                                       )
         
         st.markdown(f'Parâmetros usados:')
-        st.markdown(f'- max_depth={pos[1]}')
-        st.markdown(f'- min_samples_split={pos[2]}')
-        st.markdown(f'- min_samples_leaf={pos[3]}')
-        st.markdown(f'- num_trees={pos[4]}')
+        st.markdown(f'- max_depth={int(pos[1])+1}')
+        st.markdown(f'- min_samples_split={int(pos[2])+2}')
+        st.markdown(f'- min_samples_leaf={int(pos[3])+1}')
+        st.markdown(f'- num_trees={int(pos[4])+1}')
 
         
         
