@@ -80,8 +80,8 @@ form_vars['BOUNDS'] = bounds
 
 with st.sidebar.form(key='form'):
   st.markdown('# Opções')
-  form_vars['FEATURE_EXTRACTOR'] = st.selectbox('Escolha o extrator de características', feature_extractors)
-  form_vars['CLASSIFICATOR'] = st.selectbox('Escolha o classificador', classificators)
+  form_vars['FEATURE_EXTRACTOR'] = st.selectbox('Escolha o extrator de características', form_vars.get('feature_extractors'))
+  form_vars['CLASSIFICATOR'] = st.selectbox('Escolha o classificador', form_vars.get('classificators'))
   form_vars['SIZE'] = st.number_input('Tamanho das imagens', 32, 460, 256)
 
   st.markdown('## Parâmetros')
