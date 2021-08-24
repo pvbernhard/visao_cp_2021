@@ -1,6 +1,3 @@
-from my_variables import *
-
-
 from contextlib import contextmanager
 from io import StringIO
 from streamlit.report_thread import REPORT_CONTEXT_ATTR_NAME
@@ -50,7 +47,7 @@ def pre_process(img, size):
   return img
 
 
-def feature_extractor_GLCM(dataset, progress_bar=None):
+def feature_extractor_GLCM(form_vars, dataset, progress_bar=None):
   import streamlit as st
   import pandas as pd
   from skimage.feature import greycomatrix, greycoprops
@@ -65,8 +62,8 @@ def feature_extractor_GLCM(dataset, progress_bar=None):
     df = pd.DataFrame()
     img = dataset[image_n, :, :]
 
-    distances = DISTANCES
-    angles = ANGLES
+    distances = form_vars.get('DISTANCES')
+    angles = form_vars.get('ANGLES')
 
     i = 0
     for distance in distances:
@@ -89,7 +86,7 @@ def feature_extractor_GLCM(dataset, progress_bar=None):
   return feat_dataset
 
 
-def feature_extractor_ORB(dataset, progress_bar=None):
+def feature_extractor_ORB(form_vars, dataset, progress_bar=None):
   import streamlit as st
   import pandas as pd
   import cv2
@@ -103,7 +100,7 @@ def feature_extractor_ORB(dataset, progress_bar=None):
     
     img = dataset[image_n, :, :]
 
-    orb = cv2.ORB_create(N_KEYPOINTS)
+    orb = cv2.ORB_create(form_vars.get('N_KEYPOINTS'))
     kp, des = orb.detectAndCompute(img, None)
     des = des.reshape(-1)
     df = pd.DataFrame(des)
@@ -116,19 +113,19 @@ def feature_extractor_ORB(dataset, progress_bar=None):
   return feat_dataset
 
 
-def feature_extractor_GABOR(dataset, progress_bar=None):
+def feature_extractor_GABOR(form_vars, dataset, progress_bar=None):
   import streamlit as st
   import pandas as pd
   import cv2
 
   feat_dataset = pd.DataFrame()
 
-  ksize = KSIZE
-  sigma = SIGMA
-  theta = THETA
-  lamda = LAMBDA
-  gamma = GAMMA
-  phi = PHI
+  ksize = form_vars.get('KSIZE')
+  sigma = form_vars.get('SIGMA')
+  theta = form_vars.get('THETA')
+  lamda = form_vars.get('LAMBDA')
+  gamma = form_vars.get('GAMMA')
+  phi = form_vars.get('PHI')
 
   kernel = cv2.getGaborKernel((ksize, ksize), sigma, theta, lamda, gamma, phi, ktype=cv2.CV_32F)
   
@@ -143,7 +140,7 @@ def feature_extractor_GABOR(dataset, progress_bar=None):
 
     # reduzindo tamanho pra ter menos caracteristicas
     # pra reduzir o tempo
-    fimg = cv2.resize(fimg, (SIZE // REDUCE_DIM, SIZE // REDUCE_DIM))
+    fimg = cv2.resize(fimg, (form_vars.get('SIZE') // form_vars.get('REDUCE_DIM'), form_vars.get('SIZE') // form_vars.get('REDUCE_DIM')))
 
     fimg = fimg.reshape(-1)
     df = pd.DataFrame(fimg)
@@ -156,13 +153,13 @@ def feature_extractor_GABOR(dataset, progress_bar=None):
   return feat_dataset
 
 
-def feature_extractor(feature_extractor, dataset, progress_bar=None):
-  if feature_extractor == 'GLCM':
-    return feature_extractor_GLCM(dataset, progress_bar)
-  if feature_extractor == 'ORB':
-    return  feature_extractor_ORB(dataset, progress_bar)
-  if feature_extractor == 'Gabor':
-    return  feature_extractor_GABOR(dataset, progress_bar)
+def feature_extractor(form_vars, dataset, progress_bar=None):
+  if form_vars.get('FEATURE_EXTRACTOR') == 'GLCM':
+    return feature_extractor_GLCM(form_vars, dataset, progress_bar)
+  if form_vars.get('FEATURE_EXTRACTOR') == 'ORB':
+    return  feature_extractor_ORB(form_vars, dataset, progress_bar)
+  if form_vars.get('FEATURE_EXTRACTOR') == 'Gabor':
+    return  feature_extractor_GABOR(form_vars, dataset, progress_bar)
   return None
 
 
@@ -265,14 +262,14 @@ def load_dataset(dataset_folder, size, progress_bar=None):
   return X, y
 
 
-def main_fit(X, y):
+def main_fit(form_vars, X, y):
   import streamlit as st
   from sklearn.model_selection import StratifiedKFold
   from pyswarms.single.global_best import GlobalBestPSO
   from sklearn import metrics
   import statistics
 
-  skf = StratifiedKFold(n_splits=N_SPLITS, random_state=42, shuffle=True)
+  skf = StratifiedKFold(n_splits=form_vars.get('N_SPLITS'), random_state=42, shuffle=True)
   st.markdown(f'{skf}')
 
   accuracies = []
@@ -288,15 +285,16 @@ def main_fit(X, y):
 
     X_train = X_train.reshape(X_train.shape[0], -1)
 
-    optimizer = GlobalBestPSO(n_particles=N_PARTICLES,
-                              dimensions=DIMENSIONS,
-                              options=OPTIONS,
-                              bounds=BOUNDS)
+    optimizer = GlobalBestPSO(n_particles=form_vars.get('N_PARTICLES'),
+                              dimensions=form_vars.get('DIMENSIONS'),
+                              options=form_vars.get('OPTIONS'),
+                              bounds=form_vars.get('BOUNDS')
+                              )
     
     with st_stdout('info'), st_stderr('info'):
-      if CLASSIFICATOR == 'XGBoost':
+      if form_vars.get('CLASSIFICATOR') == 'XGBoost':
         cost, pos = optimizer.optimize(xgboost_cost,
-                                      iters=ITERS,
+                                      iters=form_vars.get('ITERS'),
                                       X_train=X_train,
                                       y_train=y_train,
                                       X_test=X_test,
@@ -311,9 +309,9 @@ def main_fit(X, y):
 
         prediction = model_prediction(pos, X_train, y_train, X_test)
 
-      elif CLASSIFICATOR == 'Bagging':
+      elif form_vars.get('CLASSIFICATOR') == 'Bagging':
         cost, pos = optimizer.optimize(bagging_cost,
-                                      iters=ITERS,
+                                      iters=form_vars.get('ITERS'),
                                       X_train=X_train,
                                       y_train=y_train,
                                       X_test=X_test,
