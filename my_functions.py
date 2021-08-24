@@ -1,3 +1,5 @@
+from my_variables import *
+
 
 def pre_process(img, size):
   import cv2
