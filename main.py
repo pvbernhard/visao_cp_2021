@@ -61,7 +61,7 @@ if submit_button:
   st.markdown('Exemplos:')
   for i in range(3):
     n = random.randint(0, X.shape[0]-1)
-    img = X_base[n]
+    img = X[n]
     st.image(img)
 
   bar_features = st.progress(0)
