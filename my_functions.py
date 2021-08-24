@@ -55,7 +55,6 @@ def feature_extractor_GLCM(dataset, progress_bar=None):
   import pandas as pd
   from skimage.feature import greycomatrix, greycoprops
 
-  st.markdown(f'Extraindo características...')
   feat_dataset = pd.DataFrame()
   
   n = 0
@@ -87,7 +86,7 @@ def feature_extractor_GLCM(dataset, progress_bar=None):
     
     feat_dataset = feat_dataset.append(df)
     n += 1
-  st.markdown(f'Shape: {feat_dataset.shape}')
+  st.markdown(f'Shape das características: {feat_dataset.shape}')
   return feat_dataset
 
 
@@ -96,7 +95,6 @@ def feature_extractor_ORB(dataset, progress_bar=None):
   import pandas as pd
   import cv2
 
-  st.markdown('Extraindo características...')
   feat_dataset = pd.DataFrame()
   
   n = 0
@@ -116,7 +114,7 @@ def feature_extractor_ORB(dataset, progress_bar=None):
 
     feat_dataset = feat_dataset.append(df)
     n += 1
-  st.markdown(f'Shape: {feat_dataset.shape}')
+  st.markdown(f'Shape das características: {feat_dataset.shape}')
   return feat_dataset
 
 
@@ -125,7 +123,6 @@ def feature_extractor_GABOR(dataset, progress_bar=None):
   import pandas as pd
   import cv2
 
-  st.markdown('Extraindo características...')
   feat_dataset = pd.DataFrame()
 
   ksize = KSIZE
@@ -158,7 +155,7 @@ def feature_extractor_GABOR(dataset, progress_bar=None):
 
     feat_dataset = feat_dataset.append(df)
     n += 1
-  st.markdown(f'Shape: {feat_dataset.shape}')
+  st.markdown(f'Shape das características: {feat_dataset.shape}')
   return feat_dataset
 
 
@@ -241,7 +238,7 @@ def bagging_cost(params, X_train, y_train, X_test, y_test):
 
   return np.transpose(results)
 
-
+@st.cache
 def load_dataset(dataset_folder, progress_bar=None):
   import os, glob, cv2
   import streamlit as st
@@ -267,6 +264,7 @@ def load_dataset(dataset_folder, progress_bar=None):
 
   X = np.array(X)
   y = np.array(y)
+
   return X, y
 
 

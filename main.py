@@ -46,15 +46,22 @@ with st.sidebar.form(key='form'):
   submit_button = st.form_submit_button(label='Iniciar')
 
 if submit_button:
+  st.markdown('# Dataset')
+  loading_dataset = st.empty()
+
+  loading_dataset.markdown('Carregando dataset...')
+
   bar_dataset = st.progress(0)
 
   X, y_strings = myf.load_dataset(DATASET_FOLDER, progress_bar=bar_dataset)
+
+  loading_dataset.empty()
 
   le = preprocessing.LabelEncoder()
   le.fit(y_strings)
   y = le.transform(y_strings)
 
-  st.markdown('Exemplos:')
+  st.markdown('## Exemplos')
   col1, col2, col3 = st.columns(3)
 
   with col1:
@@ -72,12 +79,22 @@ if submit_button:
     img = X[n]
     st.image(img)
 
+  st.markdown('---')
+
+  st.markdown(f'# Características - {FEATURE_EXTRACTOR}')
+
+  loading_features = st.empty()
+  loading_features.markdown(f'Extraindo características...')
+
   bar_features = st.progress(0)
 
   X_features = myf.feature_extractor(FEATURE_EXTRACTOR, X, progress_bar=bar_features)
 
+  loading_features.empty()
+
   X_for_training = np.array(X_features)
 
   st.markdown('---')
+  st.markdown(f'# Treino - {CLASSIFICATOR}')
 
   myf.main_fit(X_for_training, y)
