@@ -4,6 +4,7 @@ import my_functions as myf
 from my_variables import *
 
 import numpy as np
+import random
 from sklearn import preprocessing
 
 
