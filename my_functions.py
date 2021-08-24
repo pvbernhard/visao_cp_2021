@@ -238,7 +238,7 @@ def bagging_cost(params, X_train, y_train, X_test, y_test):
 
   return np.transpose(results)
 
-@st.cache(hash_funcs={streamlit.delta_generator.DeltaGenerator: lambda _: None})
+@st.cache(hash_funcs={st.delta_generator.DeltaGenerator: lambda _: None})
 def load_dataset(dataset_folder, progress_bar=None):
   import os, glob, cv2
   import streamlit as st
