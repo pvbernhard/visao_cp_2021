@@ -24,20 +24,20 @@ with st.sidebar.form(key='form'):
   st.markdown('## Parâmetros')
 
   st.markdown('### GLCM')
-  DISTANCES = st.multiselect('GLCM: Distâncias', [1, 3, 5, 7, 9], [1, 3, 5])
-  ANGLES = st.multiselect('GLCM: Ângulos', [0, np.pi/4, np.pi/2, 3*np.pi/4, np.pi, 5*np.pi/4, 3*np.pi/2, 7*np.pi/4], [0, np.pi/4, np.pi/2])
+  DISTANCES = st.multiselect('Distâncias', [1, 3, 5, 7, 9], [1, 3, 5])
+  ANGLES = st.multiselect('Ângulos', [0, np.pi/4, np.pi/2, 3*np.pi/4, np.pi, 5*np.pi/4, 3*np.pi/2, 7*np.pi/4], [0, np.pi/4, np.pi/2])
   
   st.markdown('### ORB')
-  N_KEYPOINTS = st.slider('ORB: Número de keypoints', 1, 100, 10)
+  N_KEYPOINTS = st.slider('Número de keypoints', 1, 100, 10)
 
   st.markdown('### Gabor')
-  KSIZE = st.slider('Gabor: Ksize', 1, 100, 20)
-  SIGMA = st.slider('Gabor: Sigma', 1, 100, 20)
-  THETA = st.slider('Gabor: Theta', 0.01, 2*np.pi, 1*np.pi/4)
-  LAMBDA = st.slider('Gabor: Lambda', 0.01, 2*np.pi, 1*np.pi/4)
-  GAMMA = st.slider('Gabor: Gamma', 0.0, 1.0, 0.4, 0.05)
-  PHI = st.slider('Gabor: Phi', 0.0, 1.0, 0.0, 0.05)
-  REDUCE_DIM = st.number_input('Gabor: Reduzir dimensões', 1, 32, 8)
+  KSIZE = st.slider('Ksize', 1, 100, 20)
+  SIGMA = st.slider('Sigma', 1, 100, 20)
+  THETA = st.slider('Theta', 0.01, 2*np.pi, 1*np.pi/4)
+  LAMBDA = st.slider('Lambda', 0.01, 2*np.pi, 1*np.pi/4)
+  GAMMA = st.slider('Gamma', 0.0, 1.0, 0.4, 0.05)
+  PHI = st.slider('Phi', 0.0, 1.0, 0.0, 0.05)
+  REDUCE_DIM = st.slider('Reduzir dimensões', 1, 32, 8)
 
   st.markdown('## PSO')
   N_PARTICLES = st.slider('Número de partículas', 1, 100, 15)
@@ -100,3 +100,5 @@ if submit_button:
   st.markdown(f'# Treino - {CLASSIFICATOR}')
 
   myf.main_fit(X_for_training, y)
+
+  st.markdown('Finalizado.')
