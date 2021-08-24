@@ -51,6 +51,8 @@ X_MIN = 0.01 * np.ones(DIMENSIONS)
 BOUNDS = (X_MIN, X_MAX)
 ITERS = 5
 
+def teste(args):
+  print(args)
 
 st.set_page_config(
   page_title='Trabalho de Visão CP',
@@ -61,14 +63,14 @@ st.set_page_config(
 
 with st.sidebar.form(key='form'):
   st.markdown('# Opções')
-  FEATURE_EXTRACTOR = st.selectbox('Escolha o extrator de características', feature_extractors)
+  FEATURE_EXTRACTOR = st.selectbox('Escolha o extrator de características', feature_extractors, on_change=teste)
   CLASSIFICATOR = st.selectbox('Escolha o classificador', classificators)
   SIZE = st.number_input('Tamanho das imagens', 128, 460, 256)
 
   st.markdown('## Parâmetros')
   if FEATURE_EXTRACTOR == 'GLCM':
-    DISTANCES = st.multiselect('GLCM: Distâncias', [1, 3, 5])
-    ANGLES = st.multiselect('GLCM: Ângulos', [0, np.pi/4, np.pi/2])
+    DISTANCES = st.multiselect('GLCM: Distâncias', [1, 3, 5, 7, 9], [1, 3, 5])
+    ANGLES = st.multiselect('GLCM: Ângulos', [0, np.pi/4, np.pi/2, 3*np.pi/4, np.pi, 5*np.pi/4, 3*np.pi/2, 7*np.pi/4], [0, np.pi/4, np.pi/2])
   elif FEATURE_EXTRACTOR == 'ORB':
     N_KEYPOINTS = st.slider('ORB: Número de keypoints', 1, 100, 10)
   elif FEATURE_EXTRACTOR == 'Gabor':
