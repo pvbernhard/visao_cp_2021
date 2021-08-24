@@ -55,7 +55,8 @@ if submit_button:
 
   X, y_strings = myf.load_dataset(DATASET_FOLDER, progress_bar=bar_dataset)
 
-  loading_dataset.empty()
+  loading_dataset.markdown('Carregado.')
+  bar_dataset.empty()
 
   le = preprocessing.LabelEncoder()
   le.fit(y_strings)
@@ -90,7 +91,8 @@ if submit_button:
 
   X_features = myf.feature_extractor(FEATURE_EXTRACTOR, X, progress_bar=bar_features)
 
-  loading_features.empty()
+  loading_features.markdown('Extraídas.')
+  bar_features.empty()
 
   X_for_training = np.array(X_features)
 
