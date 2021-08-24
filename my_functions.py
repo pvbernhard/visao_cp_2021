@@ -40,6 +40,10 @@ def st_stderr(dst):
         yield
 
 
+def clamp(value, min_value, max_value):
+  return sorted((min_value, value, max_value))[1]
+
+
 def pre_process(img, size):
   import cv2
   img = cv2.resize(img, (size, size))
@@ -129,13 +133,18 @@ def feature_extractor_GABOR(form_vars, dataset, progress_bar=None):
 
   kernel = cv2.getGaborKernel((ksize, ksize), sigma, theta, lamda, gamma, phi, ktype=cv2.CV_32F)
 
+  kernel_image = kernel * (255.0 / 2)
+  kernel_image += (255.0 / 2)
+  kernel_image = cv2.resize(kernel_image, (form_vars.get('SIZE'), form_vars.get('SIZE')))
+  kernel_image = kernel_image.astype(int)
+
   st.write(kernel.shape)
   st.write(kernel[0])
 
-  # kernel_resized = cv2.resize(kernel, (form_vars.get('SIZE'), form_vars.get('SIZE')))
-  # kernel_resized /= 255.
+  st.write(kernel_image.shape)
+  st.write(kernel_image[0])
 
-  # st.image(kernel_resized, 'Kernel')
+  st.image(kernel_image, 'Kernel')
   
   n = 0
   for image_n in range(dataset.shape[0]):
