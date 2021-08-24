@@ -61,15 +61,18 @@ form_vars = {
   },
   'N_PARTICLES': 15,
   'DIMENSIONS': 5,
-  'X_MAX': 1 * np.ones(DIMENSIONS),
-  'X_MIN': 0.01 * np.ones(DIMENSIONS),
   'ITERS': 5
 }
 
 form_vars['FEATURE_EXTRACTOR'] = form_vars.get('feature_extractors')[0]
 form_vars['CLASSIFICATOR'] = form_vars.get('classificators')[0]
+
+# PSO
+form_vars['X_MAX'] = 1 * np.ones(form_vars.get('DIMENSIONS')),
 form_vars['X_MAX'][1:] *= 50
+form_vars['X_MIN'] = 0.01 * np.ones(form_vars.get('DIMENSIONS')),
 form_vars['BOUNDS'] = (form_vars.get('X_MIN'), form_vars.get('X_MAX'))
+
 
 with st.sidebar.form(key='form'):
   st.markdown('# Opções')
