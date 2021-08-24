@@ -220,8 +220,7 @@ def load_dataset(dataset_folder, progress_bar=None):
           y.append(label)
           counter += 1
           if progress_bar:
-            print('counter:', counter, 'total:', total)
-            progress_bar.progress(min((counter / total)*100, 99.9))
+            progress_bar.progress(min((counter / (total + 1))*100, 99.9))
 
   X = np.array(X)
   y = np.array(y)
