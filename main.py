@@ -21,7 +21,7 @@ with st.sidebar.form(key='form'):
   st.markdown('# Opções')
   FEATURE_EXTRACTOR = st.selectbox('Escolha o extrator de características', feature_extractors)
   CLASSIFICATOR = st.selectbox('Escolha o classificador', classificators)
-  SIZE = st.number_input('Tamanho das imagens', 128, 460, 256)
+  SIZE = st.number_input('Tamanho das imagens', 32, 460, 256)
 
   st.markdown('## Parâmetros')
 
