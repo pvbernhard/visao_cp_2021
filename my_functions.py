@@ -295,7 +295,7 @@ def main_fit(X, y):
                               options=OPTIONS,
                               bounds=BOUNDS)
     
-    with st_stdout('info'):
+    with st_stdout('info'), st_stderr('info'):
       if CLASSIFICATOR == 'XGBoost':
         cost, pos = optimizer.optimize(xgboost_cost,
                                       iters=ITERS,
@@ -341,7 +341,7 @@ def main_fit(X, y):
     accuracies.append(acc)
     mean_errors.append(mean_error)
 
-    st.markdown(metrics.classification_report(y_test, prediction, target_names=['benign', 'malignant']))
+    st.write(metrics.classification_report(y_test, prediction, target_names=['benign', 'malignant']))
 
     st.markdown('---')
 
