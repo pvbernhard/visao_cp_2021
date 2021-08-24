@@ -7,6 +7,8 @@ import numpy as np
 import random
 from sklearn import preprocessing
 
+from skimage.transform import resize
+
 
 st.set_page_config(
   page_title='Trabalho de Visão CP',
@@ -53,7 +55,7 @@ if submit_button:
 
   bar_dataset = st.progress(0)
 
-  X, y_strings = myf.load_dataset(DATASET_FOLDER, progress_bar=bar_dataset)
+  X, y_strings = myf.load_dataset(DATASET_FOLDER, SIZE, progress_bar=bar_dataset)
 
   loading_dataset.markdown('Carregado.')
   bar_dataset.empty()
@@ -61,13 +63,6 @@ if submit_button:
   le = preprocessing.LabelEncoder()
   le.fit(y_strings)
   y = le.transform(y_strings)
-
-  resizing = st.empty()
-  if X[0].shape[0] != SIZE:
-    resizing.markdown(f'Redimensionando de {X[0].shape[0]} para {SIZE}...')
-    f = lambda x: myf.pre_process(x, SIZE)
-    X = f(X)
-    resizing.markdown(f'Redimensionado de {X[0].shape[0]} para {SIZE}.')
 
   st.markdown('## Exemplos')
   col1, col2, col3 = st.columns(3)

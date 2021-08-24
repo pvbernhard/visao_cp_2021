@@ -239,7 +239,7 @@ def bagging_cost(params, X_train, y_train, X_test, y_test):
   return np.transpose(results)
 
 @st.cache(hash_funcs={st.delta_generator.DeltaGenerator: lambda _: None})
-def load_dataset(dataset_folder, progress_bar=None):
+def load_dataset(dataset_folder, size, progress_bar=None):
   import os, glob, cv2
   import streamlit as st
 
@@ -255,7 +255,7 @@ def load_dataset(dataset_folder, progress_bar=None):
       label = directory_path.split(os.path.sep)[-1]
       for img_path in glob.glob(os.path.join(directory_path, "*.png")):
           img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
-          img = pre_process(img, SIZE)
+          img = pre_process(img, size)
           X.append(img)
           y.append(label)
           counter += 1
