@@ -3,7 +3,7 @@ numpy
 pandas
 scikit-learn
 scikit-image
-cv2
+opencv-python-headless
 pyswarms
 xgboost
 
