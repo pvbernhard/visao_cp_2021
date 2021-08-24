@@ -140,7 +140,7 @@ if submit_button:
 
   st.markdown('---')
 
-  st.markdown(f'# Características - {form_vars.get('FEATURE_EXTRACTOR')}')
+  st.markdown(f"# Características - {form_vars.get('FEATURE_EXTRACTOR')}")
 
   loading_features = st.empty()
   loading_features.markdown(f'Extraindo características...')
@@ -157,7 +157,7 @@ if submit_button:
   X_for_training = np.array(X_features)
 
   st.markdown('---')
-  st.markdown(f'# Treino - {form_vars.get('CLASSIFICATOR')}')
+  st.markdown(f"# Treino - {form_vars.get('CLASSIFICATOR')}")
 
   myf.main_fit(form_vars, X_for_training, y)
 
