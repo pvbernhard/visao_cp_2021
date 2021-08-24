@@ -128,6 +128,10 @@ def feature_extractor_GABOR(form_vars, dataset, progress_bar=None):
   phi = form_vars.get('PHI')
 
   kernel = cv2.getGaborKernel((ksize, ksize), sigma, theta, lamda, gamma, phi, ktype=cv2.CV_32F)
+
+  kernel_resized = cv2.resize(kernel, (form_vars.get('SIZE'), form_vars.get('SIZE')))
+
+  st.image(kernel_resized, 'Kernel')
   
   n = 0
   for image_n in range(dataset.shape[0]):
@@ -185,6 +189,7 @@ def model_prediction(params, X_train, y_train, X_test):
 def model_prediction_bagging(params, X_train, y_train, X_test):
   from sklearn.tree import DecisionTreeClassifier
   from sklearn.ensemble import BaggingClassifier
+  import numpy as np
 
   base_cls = DecisionTreeClassifier(max_depth=int(params[1])+1,
                                     min_samples_split=int(params[2])+2,
