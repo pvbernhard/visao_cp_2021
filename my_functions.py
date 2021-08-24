@@ -19,7 +19,7 @@ def feature_extractor_GLCM(dataset, progress_bar=None):
   n = 0
   for image_n in range(dataset.shape[0]):
     if progress_bar:
-      progress_bar.progress(min((n / dataset.shape[0])*100, 99.9))
+      progress_bar.progress((n / dataset.shape[0])*100)
     
     df = pd.DataFrame()
     img = dataset[image_n, :, :]
@@ -60,7 +60,7 @@ def feature_extractor_ORB(dataset, progress_bar=None):
   n = 0
   for image_n in range(dataset.shape[0]):
     if progress_bar:
-      progress_bar.progress(min((n / dataset.shape[0])*100, 99.9))
+      progress_bar.progress((n / dataset.shape[0])*100)
     
     img = dataset[image_n, :, :]
 
@@ -98,7 +98,7 @@ def feature_extractor_GABOR(dataset, progress_bar=None):
   n = 0
   for image_n in range(dataset.shape[0]):
     if progress_bar:
-      progress_bar.progress(min((n / dataset.shape[0])*100, 99.9))
+      progress_bar.progress((n / dataset.shape[0])*100)
     
     img = dataset[image_n, :, :]
     
@@ -220,7 +220,9 @@ def load_dataset(dataset_folder, progress_bar=None):
           y.append(label)
           counter += 1
           if progress_bar:
-            progress_bar.progress(min((counter / (total + 1))*100, 99.9))
+            if (counter / total)*100 > 1:
+              st.text(f'counter: {counter}, total: {total}')
+            progress_bar.progress((counter / total)*100)
 
   X = np.array(X)
   y = np.array(y)
