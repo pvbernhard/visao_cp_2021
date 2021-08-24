@@ -138,12 +138,6 @@ def feature_extractor_GABOR(form_vars, dataset, progress_bar=None):
   kernel_image = cv2.resize(kernel_image, (form_vars.get('SIZE'), form_vars.get('SIZE')))
   kernel_image = kernel_image.astype(int)
 
-  st.write(kernel.shape)
-  st.write(kernel[0])
-
-  st.write(kernel_image.shape)
-  st.write(kernel_image[0])
-
   st.image(kernel_image, 'Kernel')
   
   n = 0
