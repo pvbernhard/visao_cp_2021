@@ -175,7 +175,9 @@ def model_prediction(params, X_train, y_train, X_test):
       min_child_weight=params[3], # range: [0,inf]
       max_delta_step=params[4], # range: [0,inf]
       )
+  X_train = np.nan_to_num(X_train)
   model.fit(X_train, y_train)
+  X_test = np.nan_to_num(X_test)
   prediction = model.predict(X_test)
   return prediction
 
@@ -184,15 +186,17 @@ def model_prediction_bagging(params, X_train, y_train, X_test):
   from sklearn.tree import DecisionTreeClassifier
   from sklearn.ensemble import BaggingClassifier
 
-  base_cls = DecisionTreeClassifier(max_depth=int(params[1]),
-                                    min_samples_split=params[2],
-                                    min_samples_leaf=params[3]
+  base_cls = DecisionTreeClassifier(max_depth=int(params[1])+1,
+                                    min_samples_split=int(params[2])+2,
+                                    min_samples_leaf=int(params[3])+1
                                     )
   num_trees = int(params[4])
   model = BaggingClassifier(base_estimator = base_cls,
                             n_estimators = num_trees,
                             random_state = 42)
+  X_train = np.nan_to_num(X_train)
   model.fit(X_train, y_train)
+  X_test = np.nan_to_num(X_test)
   prediction = model.predict(X_test)
   return prediction
 
@@ -303,9 +307,10 @@ def main_fit(form_vars, X, y):
                                       )
         
         st.markdown(f'Parâmetros usados:')
-        st.markdown(f'- max_depth={pos[1]}')
-        st.markdown(f'- min_samples_split={pos[2]}')
-        st.markdown(f'- min_samples_leaf={pos[3]}')
+        st.markdown(f'- eta={pos[0]}')
+        st.markdown(f'- gamma={pos[1]}')
+        st.markdown(f'- max_depth={pos[2]}')
+        st.markdown(f'- min_child_weight={pos[3]}')
         st.markdown(f'- max_delta_step={pos[4]}')
 
         prediction = model_prediction(pos, X_train, y_train, X_test)
@@ -320,11 +325,13 @@ def main_fit(form_vars, X, y):
                                       )
         
         st.markdown(f'Parâmetros usados:')
-        st.markdown(f'- eta={pos[0]}')
-        st.markdown(f'- gamma={pos[1]}')
-        st.markdown(f'- max_depth={pos[2]}')
-        st.markdown(f'- min_child_weight={pos[3]}')
+        st.markdown(f'- max_depth={pos[1]}')
+        st.markdown(f'- min_samples_split={pos[2]}')
+        st.markdown(f'- min_samples_leaf={pos[3]}')
         st.markdown(f'- num_trees={pos[4]}')
+
+        
+        
 
         prediction = model_prediction_bagging(pos, X_train, y_train, X_test)
       else:
