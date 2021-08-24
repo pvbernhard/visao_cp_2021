@@ -130,6 +130,7 @@ def feature_extractor_GABOR(form_vars, dataset, progress_bar=None):
   kernel = cv2.getGaborKernel((ksize, ksize), sigma, theta, lamda, gamma, phi, ktype=cv2.CV_32F)
 
   kernel_resized = cv2.resize(kernel, (form_vars.get('SIZE'), form_vars.get('SIZE')))
+  kernel_resized /= 255.
 
   st.image(kernel_resized, 'Kernel')
   
