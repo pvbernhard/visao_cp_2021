@@ -19,7 +19,7 @@ def st_redirect(src, dst):
 
         def new_write(b):
             if getattr(current_thread(), REPORT_CONTEXT_ATTR_NAME, None):
-                buffer.write(b)
+                buffer.write(b + '\n')
                 output_func(buffer.getvalue())
             else:
                 old_write(b)
@@ -341,7 +341,7 @@ def main_fit(X, y):
     accuracies.append(acc)
     mean_errors.append(mean_error)
 
-    st.write(metrics.classification_report(y_test, prediction, target_names=['benign', 'malignant']))
+    st.table(metrics.classification_report(y_test, prediction, target_names=['benign', 'malignant'], output_dict=True))
 
     st.markdown('---')
 
