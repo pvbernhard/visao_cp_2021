@@ -273,6 +273,7 @@ def main_fit(X, y):
   from sklearn.model_selection import StratifiedKFold
   from pyswarms.single.global_best import GlobalBestPSO
   from sklearn import metrics
+  import statistics
 
   skf = StratifiedKFold(n_splits=N_SPLITS, random_state=42, shuffle=True)
   st.markdown(f'{skf}')
