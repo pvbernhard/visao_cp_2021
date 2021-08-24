@@ -84,6 +84,10 @@ with st.sidebar.form(key='form'):
   form_vars['CLASSIFICATOR'] = st.selectbox('Escolha o classificador', form_vars.get('classificators'))
   form_vars['SIZE'] = st.number_input('Tamanho das imagens', 32, 460, 256)
 
+  st.markdown('## PSO')
+  form_vars['N_PARTICLES'] = st.slider('Número de partículas', 1, 100, 15)
+  form_vars['ITERS'] = st.slider('Iterações', 1, 100, 5)
+
   st.markdown('## Parâmetros')
 
   st.markdown('### GLCM')
@@ -101,10 +105,6 @@ with st.sidebar.form(key='form'):
   form_vars['GAMMA'] = st.slider('Gamma', 0.0, 1.0, 0.4, 0.05)
   form_vars['PHI'] = st.slider('Phi', 0.0, 1.0, 0.0, 0.05)
   form_vars['REDUCE_DIM'] = st.slider('Reduzir dimensões', 1, 32, 8)
-
-  st.markdown('## PSO')
-  form_vars['N_PARTICLES'] = st.slider('Número de partículas', 1, 100, 15)
-  form_vars['ITERS'] = st.slider('Iterações', 1, 100, 5)
 
   submit_button = st.form_submit_button(label='Iniciar')
 
