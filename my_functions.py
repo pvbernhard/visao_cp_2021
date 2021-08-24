@@ -202,6 +202,7 @@ def bagging_cost(params, X_train, y_train, X_test, y_test):
 
 def load_dataset(dataset_folder, progress_bar=None):
   import os, glob, cv2
+  import streamlit as st
 
   X = []
   y = []
