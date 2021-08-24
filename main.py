@@ -8,10 +8,6 @@ import random
 from sklearn import preprocessing
 
 
-
-def teste(args):
-  print(args)
-
 st.set_page_config(
   page_title='Trabalho de Visão CP',
   page_icon='💻',
@@ -59,7 +55,19 @@ if submit_button:
   y = le.transform(y_strings)
 
   st.markdown('Exemplos:')
-  for i in range(3):
+  col1, col2, col3 = st.columns(3)
+
+  with col1:
+    n = random.randint(0, X.shape[0]-1)
+    img = X[n]
+    st.image(img)
+
+  with col2:
+    n = random.randint(0, X.shape[0]-1)
+    img = X[n]
+    st.image(img)
+
+  with col3:
     n = random.randint(0, X.shape[0]-1)
     img = X[n]
     st.image(img)
@@ -69,5 +77,7 @@ if submit_button:
   X_features = myf.feature_extractor(FEATURE_EXTRACTOR, X, progress_bar=bar_features)
 
   X_for_training = np.array(X_features)
+
+  st.markdown('---')
 
   myf.main_fit(X_for_training, y)

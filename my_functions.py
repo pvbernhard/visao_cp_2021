@@ -1,6 +1,48 @@
 from my_variables import *
 
 
+from contextlib import contextmanager
+from io import StringIO
+from streamlit.report_thread import REPORT_CONTEXT_ATTR_NAME
+from threading import current_thread
+import streamlit as st
+import sys
+
+
+@contextmanager
+def st_redirect(src, dst):
+    placeholder = st.empty()
+    output_func = getattr(placeholder, dst)
+
+    with StringIO() as buffer:
+        old_write = src.write
+
+        def new_write(b):
+            if getattr(current_thread(), REPORT_CONTEXT_ATTR_NAME, None):
+                buffer.write(b)
+                output_func(buffer.getvalue())
+            else:
+                old_write(b)
+
+        try:
+            src.write = new_write
+            yield
+        finally:
+            src.write = old_write
+
+
+@contextmanager
+def st_stdout(dst):
+    with st_redirect(sys.stdout, dst):
+        yield
+
+
+@contextmanager
+def st_stderr(dst):
+    with st_redirect(sys.stderr, dst):
+        yield
+
+
 def pre_process(img, size):
   import cv2
   img = cv2.resize(img, (size, size))
@@ -255,42 +297,43 @@ def main_fit(X, y):
                               options=OPTIONS,
                               bounds=BOUNDS)
     
-    if CLASSIFICATOR == 'XGBoost':
-      cost, pos = optimizer.optimize(xgboost_cost,
-                                    iters=ITERS,
-                                    X_train=X_train,
-                                    y_train=y_train,
-                                    X_test=X_test,
-                                    y_test=y_test
-                                    )
-      
-      st.markdown(f'Parâmetros usados:')
-      st.markdown(f'- max_depth={pos[1]}')
-      st.markdown(f'- min_samples_split={pos[2]}')
-      st.markdown(f'- min_samples_leaf={pos[3]}')
-      st.markdown(f'- max_delta_step={pos[4]}')
+    with st_stdout('info'):
+      if CLASSIFICATOR == 'XGBoost':
+        cost, pos = optimizer.optimize(xgboost_cost,
+                                      iters=ITERS,
+                                      X_train=X_train,
+                                      y_train=y_train,
+                                      X_test=X_test,
+                                      y_test=y_test
+                                      )
+        
+        st.markdown(f'Parâmetros usados:')
+        st.markdown(f'- max_depth={pos[1]}')
+        st.markdown(f'- min_samples_split={pos[2]}')
+        st.markdown(f'- min_samples_leaf={pos[3]}')
+        st.markdown(f'- max_delta_step={pos[4]}')
 
-      prediction = model_prediction(pos, X_train, y_train, X_test)
+        prediction = model_prediction(pos, X_train, y_train, X_test)
 
-    elif CLASSIFICATOR == 'Bagging':
-      cost, pos = optimizer.optimize(bagging_cost,
-                                    iters=ITERS,
-                                    X_train=X_train,
-                                    y_train=y_train,
-                                    X_test=X_test,
-                                    y_test=y_test
-                                    )
-      
-      st.markdown(f'Parâmetros usados:')
-      st.markdown(f'- eta={pos[0]}')
-      st.markdown(f'- gamma={pos[1]}')
-      st.markdown(f'- max_depth={pos[2]}')
-      st.markdown(f'- min_child_weight={pos[3]}')
-      st.markdown(f'- num_trees={pos[4]}')
+      elif CLASSIFICATOR == 'Bagging':
+        cost, pos = optimizer.optimize(bagging_cost,
+                                      iters=ITERS,
+                                      X_train=X_train,
+                                      y_train=y_train,
+                                      X_test=X_test,
+                                      y_test=y_test
+                                      )
+        
+        st.markdown(f'Parâmetros usados:')
+        st.markdown(f'- eta={pos[0]}')
+        st.markdown(f'- gamma={pos[1]}')
+        st.markdown(f'- max_depth={pos[2]}')
+        st.markdown(f'- min_child_weight={pos[3]}')
+        st.markdown(f'- num_trees={pos[4]}')
 
-      prediction = model_prediction_bagging(pos, X_train, y_train, X_test)
-    else:
-      raise Exception('Erro: classificador não encontrado.')
+        prediction = model_prediction_bagging(pos, X_train, y_train, X_test)
+      else:
+        raise Exception('Erro: classificador não encontrado.')
 
     acc = metrics.accuracy_score(y_test, prediction)
     log_loss = metrics.log_loss(y_test, prediction)
