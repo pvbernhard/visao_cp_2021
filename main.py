@@ -68,10 +68,14 @@ form_vars['FEATURE_EXTRACTOR'] = form_vars.get('feature_extractors')[0]
 form_vars['CLASSIFICATOR'] = form_vars.get('classificators')[0]
 
 # PSO
-form_vars['X_MAX'] = 1 * np.ones(form_vars.get('DIMENSIONS')),
-form_vars['X_MAX'][1:] *= 50
-form_vars['X_MIN'] = 0.01 * np.ones(form_vars.get('DIMENSIONS')),
-form_vars['BOUNDS'] = (form_vars.get('X_MIN'), form_vars.get('X_MAX'))
+x_max = np.ones(form_vars.get('DIMENSIONS')) * 1
+x_min = np.ones(form_vars.get('DIMENSIONS')) * 0.01
+x_max[1:] *= 50
+bounds = (x_min, x_max)
+
+form_vars['X_MAX'] = x_max
+form_vars['X_MIN'] = x_min
+form_vars['BOUNDS'] = bounds
 
 
 with st.sidebar.form(key='form'):
