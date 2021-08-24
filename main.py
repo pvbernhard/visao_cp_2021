@@ -84,7 +84,7 @@ with st.sidebar.form(key='form'):
   N_PARTICLES = st.slider('Número de partículas', 1, 100, 15)
   ITERS = st.slider('Iterações', 1, 100, 5)
 
-submit_button = st.sidebar.form_submit_button(label='Iniciar')
+  submit_button = st.form_submit_button(label='Iniciar')
 
 if submit_button:
   bar_dataset = st.progress(0)
