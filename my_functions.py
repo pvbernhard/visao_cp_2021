@@ -86,7 +86,6 @@ def feature_extractor_GLCM(dataset, progress_bar=None):
     
     feat_dataset = feat_dataset.append(df)
     n += 1
-  st.markdown(f'Shape das características: {feat_dataset.shape}')
   return feat_dataset
 
 
@@ -114,7 +113,6 @@ def feature_extractor_ORB(dataset, progress_bar=None):
 
     feat_dataset = feat_dataset.append(df)
     n += 1
-  st.markdown(f'Shape das características: {feat_dataset.shape}')
   return feat_dataset
 
 
@@ -155,7 +153,6 @@ def feature_extractor_GABOR(dataset, progress_bar=None):
 
     feat_dataset = feat_dataset.append(df)
     n += 1
-  st.markdown(f'Shape das características: {feat_dataset.shape}')
   return feat_dataset
 
 
