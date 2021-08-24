@@ -65,7 +65,7 @@ if submit_button:
   resizing = st.empty()
   if X[0].shape[0] != SIZE:
     resizing.markdown(f'Redimensionando de {X[0].shape[0]} para {SIZE}...')
-    f = lambda x: pre_process(x, SIZE)
+    f = lambda x: myf.pre_process(x, SIZE)
     X = f(X)
     resizing.markdown(f'Redimensionado de {X[0].shape[0]} para {SIZE}.')
 
