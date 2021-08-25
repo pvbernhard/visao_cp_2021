@@ -59,9 +59,9 @@ form_vars = {
     'c2': 0.3,
     'w':0.9
   },
-  'N_PARTICLES': 15,
+  'N_PARTICLES': 10,
   'DIMENSIONS': 5,
-  'ITERS': 5
+  'ITERS': 3
 }
 
 form_vars['FEATURE_EXTRACTOR'] = form_vars.get('feature_extractors')[0]
@@ -84,9 +84,12 @@ with st.sidebar.form(key='form'):
   form_vars['CLASSIFICATOR'] = st.selectbox('Escolha o classificador', form_vars.get('classificators'))
   form_vars['SIZE'] = st.number_input('Tamanho das imagens', 32, 460, 256)
 
+  st.markdown('## Cross-Validation')
+  form_vars['N_SPLITS'] = st.number_input('Número de splits', 1, 10, 5)
+
   st.markdown('## PSO')
-  form_vars['N_PARTICLES'] = st.slider('Número de partículas', 1, 100, 15)
-  form_vars['ITERS'] = st.slider('Iterações', 1, 100, 5)
+  form_vars['N_PARTICLES'] = st.slider('Número de partículas', 1, 100, 10)
+  form_vars['ITERS'] = st.slider('Iterações', 1, 100, 3)
 
   st.markdown('## Parâmetros')
 
